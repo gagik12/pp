@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Point.h"
 #include "PiCalculator.h"
 #include "Random.h"
 

@@ -13,6 +13,7 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <ctime>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
