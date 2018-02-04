@@ -9,7 +9,10 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <random>
+#include <exception>
+#include <iostream>
+#include <string>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
