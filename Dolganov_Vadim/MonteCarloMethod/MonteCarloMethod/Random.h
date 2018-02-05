@@ -9,5 +9,6 @@ public:
 private:
 	std::uniform_real_distribution<double> m_distribution;
 	std::default_random_engine m_generator;
+	std::random_device m_randomDevice;
 };
 

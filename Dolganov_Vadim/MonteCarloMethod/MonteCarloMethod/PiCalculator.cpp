@@ -4,35 +4,67 @@
 
 const int RADIUS = 1;
 
-CPiCalculator::CPiCalculator()
+CPiCalculator::CPiCalculator(size_t countIterations, size_t countThreads)
+	: m_countIterations(countIterations)
+	, m_countThreads(countThreads)
 {
+	InitThreads();
 }
 
-double CPiCalculator::Calculate(size_t countIterations) const
+void CPiCalculator::InitThreads()
 {
-	size_t countPointsInCircle = GetCountPointsInCircle(countIterations);
-	return 4.0 * countPointsInCircle / countIterations;
+	m_threadResults.assign(m_countThreads, ThreadResult{ 0, m_countIterations / m_countThreads });
+	int residueDivision = m_countIterations % m_countThreads;
+	for (size_t i = 0; i < m_countThreads; ++i)
+	{
+		if (residueDivision != 0)
+		{
+			residueDivision--;
+			m_threadResults[i].countIterations++;
+		}
+	}
+
+	for (size_t i = 0; i < m_countThreads; ++i)
+	{
+		m_hThreads.push_back(CreateThread(NULL, NULL, &GetCountPointsInCircle, &m_threadResults[i], NULL, NULL));
+	}
 }
 
-bool CPiCalculator::IsPointInCircle(CPoint const& point) const
+double CPiCalculator::Calculate()
+{
+	WaitForMultipleObjects(m_hThreads.size(), m_hThreads.data(), TRUE, INFINITE);
+	
+	size_t countPointsInCircle = std::accumulate(m_threadResults.begin(), m_threadResults.end(), 0, [](int currentCount, ThreadResult const& value) {
+		return currentCount + value.countPointsInCircle;
+	});
+	CloseThreads();
+	return 4.0 * countPointsInCircle / m_countIterations;
+}
+
+bool CPiCalculator::IsPointInCircle(CPoint const& point)
 {
 	return point.GetX() * point.GetX() + point.GetY() * point.GetY() <= RADIUS;
 }
 
-size_t CPiCalculator::GetCountPointsInCircle(size_t countIterations) const
+DWORD WINAPI CPiCalculator::GetCountPointsInCircle(LPVOID lpParam)
 {
+	ThreadResult * threadResult = ((ThreadResult*)lpParam);
 	CRandom random(-RADIUS, RADIUS);
-
-	size_t countPointsInCircle = 0;
-	for (size_t i = 0; i < countIterations; ++i)
+	for (size_t i = 0; i < threadResult->countIterations; ++i)
 	{
 		CPoint point = random.GetPoint();
 
 		if (IsPointInCircle(point))
 		{
-			++countPointsInCircle;
+			++threadResult->countPointsInCircle;
 		}
 	}
+	ExitThread(0);
+}
 
-	return countPointsInCircle;
+void CPiCalculator::CloseThreads()
+{
+	for (size_t i = 0; i < m_countThreads; i++) {
+		CloseHandle(m_hThreads[i]);
+	}
 }

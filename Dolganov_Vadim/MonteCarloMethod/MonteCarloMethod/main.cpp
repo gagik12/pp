@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 		size_t countThreads = std::stoi(argv[2]);
 
 		unsigned int startTime = clock();
-		CPiCalculator piCalculator;
-		std::cout << "Result: " << piCalculator.Calculate(countIterations) << std::endl;
+		CPiCalculator piCalculator(countIterations, countThreads);
+		std::cout << "Result: " << piCalculator.Calculate() << std::endl;
 		unsigned int endTime = clock();
 		std::cout << "Time: " << (static_cast<float>(endTime - startTime) / CLOCKS_PER_SEC) << std::endl;
 	}

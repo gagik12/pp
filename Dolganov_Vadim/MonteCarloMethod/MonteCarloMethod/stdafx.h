@@ -14,6 +14,9 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-
+#include <windows.h>
+#include <memory>
+#include <numeric>  
+#include <functional>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

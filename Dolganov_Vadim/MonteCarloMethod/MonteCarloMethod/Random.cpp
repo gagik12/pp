@@ -4,6 +4,7 @@
 
 CRandom::CRandom(int minValue, int maxValue)
 	: m_distribution(std::uniform_real_distribution<double>(minValue, maxValue))
+	, m_generator(m_randomDevice())
 {
 }
 
