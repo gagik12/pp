@@ -1,19 +1,17 @@
 #include "stdafx.h"
-#include "PiCalculator.h"
+#include "MultiThreadedPiCalculator.h"
 #include "Random.h"
+#include "MonteCarloUtil.h"
 
-const int RADIUS = 1;
-
-CPiCalculator::CPiCalculator(size_t countIterations, size_t countThreads)
+CMultiThreadedPiCalculator::CMultiThreadedPiCalculator(size_t countIterations, size_t countThreads)
 	: m_countIterations(countIterations)
 	, m_countThreads(countThreads)
 {
 	InitThreads();
 }
 
-void CPiCalculator::InitThreads()
+void CMultiThreadedPiCalculator::InitThreads()
 {
-	//TODO: упростить
 	m_threadResults.assign(m_countThreads, ThreadResult{ 0, m_countIterations / m_countThreads });
 	int residueDivision = m_countIterations % m_countThreads;
 	for (size_t i = 0; i < m_countThreads; ++i)
@@ -31,7 +29,7 @@ void CPiCalculator::InitThreads()
 	}
 }
 
-double CPiCalculator::Calculate()
+double CMultiThreadedPiCalculator::Calculate()
 {
 	WaitForMultipleObjects(m_hThreads.size(), m_hThreads.data(), TRUE, INFINITE);
 	
@@ -43,28 +41,15 @@ double CPiCalculator::Calculate()
 	return 4.0 * countPointsInCircle / m_countIterations;
 }
 
-bool CPiCalculator::IsPointInCircle(CPoint const& point)
-{
-	return point.GetX() * point.GetX() + point.GetY() * point.GetY() <= RADIUS;
-}
 
-DWORD WINAPI CPiCalculator::GetCountPointsInCircle(LPVOID lpParam)
+DWORD WINAPI CMultiThreadedPiCalculator::GetCountPointsInCircle(LPVOID lpParam)
 {
 	ThreadResult * threadResult = ((ThreadResult*)lpParam);
-	CRandom random(-RADIUS, RADIUS);
-	for (size_t i = 0; i < threadResult->countIterations; ++i)
-	{
-		CPoint point = random.GetPoint();
-
-		if (IsPointInCircle(point))
-		{
-			++threadResult->countPointsInCircle;
-		}
-	}
+	threadResult->countPointsInCircle = CMonteCarloUtil::GetCountPointsInCircle(threadResult->countIterations);
 	ExitThread(0);
 }
 
-void CPiCalculator::CloseThreads()
+void CMultiThreadedPiCalculator::CloseThreads()
 {
 	for (size_t i = 0; i < m_countThreads; i++) {
 		CloseHandle(m_hThreads[i]);

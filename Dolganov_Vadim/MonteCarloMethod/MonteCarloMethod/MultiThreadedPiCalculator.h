@@ -1,5 +1,6 @@
 #pragma once
 #include "Point.h"
+#include "IPiCalculator.h"
 
 struct ThreadResult 
 {
@@ -9,17 +10,17 @@ struct ThreadResult
 
 typedef std::vector<ThreadResult> ThreadResults;
 
-class CPiCalculator
+class CMultiThreadedPiCalculator : public IPiCalculator
 {
 public:
-	CPiCalculator(size_t countIterations, size_t countThreads);
-	double Calculate();
+	CMultiThreadedPiCalculator(size_t countIterations, size_t countThreads);
+	double Calculate() override;
 private:
 	size_t m_countIterations;
 	size_t m_countThreads;
 
 	static DWORD WINAPI GetCountPointsInCircle(LPVOID lpParam);
-	static bool IsPointInCircle(CPoint const& point);
+
 	void InitThreads();
 	void CloseThreads();
 
