@@ -1,7 +1,6 @@
 #pragma once
 #include "Point.h"
 
-//Результат потока
 struct ThreadResult 
 {
 	size_t countPointsInCircle;

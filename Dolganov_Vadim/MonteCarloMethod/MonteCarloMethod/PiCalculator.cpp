@@ -13,6 +13,7 @@ CPiCalculator::CPiCalculator(size_t countIterations, size_t countThreads)
 
 void CPiCalculator::InitThreads()
 {
+	//TODO: упростить
 	m_threadResults.assign(m_countThreads, ThreadResult{ 0, m_countIterations / m_countThreads });
 	int residueDivision = m_countIterations % m_countThreads;
 	for (size_t i = 0; i < m_countThreads; ++i)
@@ -37,6 +38,7 @@ double CPiCalculator::Calculate()
 	size_t countPointsInCircle = std::accumulate(m_threadResults.begin(), m_threadResults.end(), 0, [](int currentCount, ThreadResult const& value) {
 		return currentCount + value.countPointsInCircle;
 	});
+
 	CloseThreads();
 	return 4.0 * countPointsInCircle / m_countIterations;
 }
