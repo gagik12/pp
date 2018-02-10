@@ -1,6 +1,7 @@
 #pragma once
 #include "Point.h"
 #include "IPiCalculator.h"
+#include "ThreadHandler.h"
 
 struct ThreadResult 
 {
@@ -20,10 +21,8 @@ private:
 	size_t m_countThreads;
 
 	static DWORD WINAPI GetCountPointsInCircle(LPVOID lpParam);
-
 	void InitThreads();
-	void CloseThreads();
 
-	std::vector<HANDLE> m_hThreads;
+	std::shared_ptr<CThreadHandler> m_threadHandler;
 	std::vector<ThreadResult> m_threadResults;
 };

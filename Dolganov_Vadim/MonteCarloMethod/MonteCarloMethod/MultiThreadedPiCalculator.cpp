@@ -6,6 +6,7 @@
 CMultiThreadedPiCalculator::CMultiThreadedPiCalculator(size_t countIterations, size_t countThreads)
 	: m_countIterations(countIterations)
 	, m_countThreads(countThreads)
+	, m_threadHandler(std::make_shared<CThreadHandler>())
 {
 	InitThreads();
 }
@@ -25,19 +26,18 @@ void CMultiThreadedPiCalculator::InitThreads()
 
 	for (size_t i = 0; i < m_countThreads; ++i)
 	{
-		m_hThreads.push_back(CreateThread(NULL, NULL, &GetCountPointsInCircle, &m_threadResults[i], NULL, NULL));
+		m_threadHandler->AddThread(CreateThread(NULL, NULL, &GetCountPointsInCircle, &m_threadResults[i], NULL, NULL));
 	}
 }
 
 double CMultiThreadedPiCalculator::Calculate()
 {
-	WaitForMultipleObjects(m_hThreads.size(), m_hThreads.data(), TRUE, INFINITE);
+	m_threadHandler->Execute();
 	
 	size_t countPointsInCircle = std::accumulate(m_threadResults.begin(), m_threadResults.end(), 0, [](int currentCount, ThreadResult const& value) {
 		return currentCount + value.countPointsInCircle;
 	});
 
-	CloseThreads();
 	return 4.0 * countPointsInCircle / m_countIterations;
 }
 
@@ -47,11 +47,4 @@ DWORD WINAPI CMultiThreadedPiCalculator::GetCountPointsInCircle(LPVOID lpParam)
 	ThreadResult * threadResult = ((ThreadResult*)lpParam);
 	threadResult->countPointsInCircle = CMonteCarloUtil::GetCountPointsInCircle(threadResult->countIterations);
 	ExitThread(0);
-}
-
-void CMultiThreadedPiCalculator::CloseThreads()
-{
-	for (size_t i = 0; i < m_countThreads; i++) {
-		CloseHandle(m_hThreads[i]);
-	}
 }
