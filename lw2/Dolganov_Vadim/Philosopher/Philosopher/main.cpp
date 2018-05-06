@@ -2,6 +2,7 @@
 #include "Fork.h"
 #include "Philosopher.h"
 #include "Thread.h"
+#include "ThreadHandler.h"
 
 //óòèëèòû äëÿ ñîçäàíèÿ îáúåêòîâ
 namespace ObjectÑreatorUtils
@@ -27,6 +28,19 @@ namespace ObjectÑreatorUtils
 
 		return philosophers;
 	}
+
+	CThreadHandler::ThreadHandlerPtr CreateThreadHandler(CPhilosopher::PhilosophersPtr & philosophers)
+	{
+		CThreadHandler::ThreadHandlerPtr threadHandler = std::make_unique<CThreadHandler>();
+		for (auto & philosopher : philosophers)
+		{
+			threadHandler->AddThread(std::make_unique<CThread>([&philosopher]() {
+				philosopher->MainLoop();
+			}));
+		}
+		return threadHandler;
+	}
+
 }
 
 int main()
@@ -35,10 +49,10 @@ int main()
 	{
 		CFork::Forks forks = ObjectÑreatorUtils::CreateForks();
 		CPhilosopher::PhilosophersPtr philosophers = ObjectÑreatorUtils::CreatePhilosophers();
-		CThread thread([&philosophers]() {
-			philosophers.at(0)->MainLoop();
-		});
-		thread.Wait();
+
+		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectÑreatorUtils::CreateThreadHandler(philosophers);
+		threadHandler->Execute();
+
 	}
 	catch (std::exception const& exception)
 	{
