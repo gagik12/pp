@@ -1,0 +1,17 @@
+[Dd]ebug/
+[Rr]elease/
+[Xx]64/
+[Xx]86/
+
+.vs
+*.VC.db
+*.vcxproj.user
+*.VisualState.xml
+
+ipch/
+*.opendb
+
+
+
+
+
