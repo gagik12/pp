@@ -1,5 +1,7 @@
 #pragma once
-class CFork
+#include "Semaphor.h"
+
+class CFork : public Semaphor
 {
 public:
 	typedef std::vector<CFork> Forks;

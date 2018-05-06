@@ -43,13 +43,28 @@ namespace ObjectСreatorUtils
 
 }
 
+//Усадить философов по местам
+//У конкретного философа слева и справа на столе лежат вилки
+//Aristotle вилка с индексом 0 и 1
+//Socrates вилка с индексом 1 и 2
+//Pifagor вилка с индексом 2 и 3
+//Platon вилка с индексом 3 и 4
+//Ptolemy вилка с индексом 4 и 0
+void ToSeatPhilosophersInPlaces(CFork::Forks const& forks, CPhilosopher::PhilosophersPtr & philosophers)
+{
+	for (size_t i = 0; i < CFork::MAX_COUNT_FORKS; ++i)
+	{
+		philosophers[i]->SetAvailableForks(std::make_pair(forks[i], forks[(i + 1) % CFork::MAX_COUNT_FORKS]));
+	}
+}
+
 int main()
 {
 	try
 	{
 		CFork::Forks forks = ObjectСreatorUtils::CreateForks();
 		CPhilosopher::PhilosophersPtr philosophers = ObjectСreatorUtils::CreatePhilosophers();
-
+		ToSeatPhilosophersInPlaces(forks, philosophers);
 		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectСreatorUtils::CreateThreadHandler(philosophers);
 		threadHandler->Execute();
 
