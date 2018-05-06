@@ -11,6 +11,7 @@ void CPhilosopher::MainLoop()
 {
 	while (true)
 	{
-
+		std::cout << "Maim Loop: " << m_name << std::endl;
+		Sleep(1000);
 	}
 }

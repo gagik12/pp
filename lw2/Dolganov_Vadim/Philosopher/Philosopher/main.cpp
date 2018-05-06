@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Fork.h"
 #include "Philosopher.h"
+#include "Thread.h"
 
 //óòèëèòû äëÿ ñîçäàíèÿ îáúåêòîâ
 namespace ObjectÑreatorUtils
@@ -34,6 +35,10 @@ int main()
 	{
 		CFork::Forks forks = ObjectÑreatorUtils::CreateForks();
 		CPhilosopher::PhilosophersPtr philosophers = ObjectÑreatorUtils::CreatePhilosophers();
+		CThread thread([&philosophers]() {
+			philosophers.at(0)->MainLoop();
+		});
+		thread.Wait();
 	}
 	catch (std::exception const& exception)
 	{

@@ -9,3 +9,5 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <functional>
+#include <Windows.h>
