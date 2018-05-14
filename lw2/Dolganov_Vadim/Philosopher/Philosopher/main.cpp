@@ -5,7 +5,7 @@
 #include "ThreadHandler.h"
 
 //утилиты для создания объектов
-namespace ObjectСreatorUtils
+namespace ObjectCreatorUtils
 {
 	CFork::Forks CreateForks()
 	{
@@ -50,11 +50,12 @@ namespace ObjectСreatorUtils
 //Pifagor вилка с индексом 2 и 3
 //Platon вилка с индексом 3 и 4
 //Ptolemy вилка с индексом 4 и 0
-void ToSeatPhilosophersInPlaces(CFork::Forks const& forks, CPhilosopher::PhilosophersPtr & philosophers)
+void InitPhilosophersWithForks(CFork::Forks const& forks, CPhilosopher::PhilosophersPtr & philosophers)
 {
 	for (size_t i = 0; i < CFork::MAX_COUNT_FORKS; ++i)
 	{
-		philosophers[i]->SetAvailableForks(std::make_pair(forks[i], forks[(i + 1) % CFork::MAX_COUNT_FORKS]));
+		size_t nextForkIndex = (i + 1) % CFork::MAX_COUNT_FORKS;
+		philosophers[i]->SetAvailableForks(std::make_pair(forks[i], forks[nextForkIndex]));
 	}
 }
 
@@ -62,10 +63,10 @@ int main()
 {
 	try
 	{
-		CFork::Forks forks = ObjectСreatorUtils::CreateForks();
-		CPhilosopher::PhilosophersPtr philosophers = ObjectСreatorUtils::CreatePhilosophers();
-		ToSeatPhilosophersInPlaces(forks, philosophers);
-		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectСreatorUtils::CreateThreadHandler(philosophers);
+		CFork::Forks forks = ObjectCreatorUtils::CreateForks();
+		CPhilosopher::PhilosophersPtr philosophers = ObjectCreatorUtils::CreatePhilosophers();
+		InitPhilosophersWithForks(forks, philosophers);
+		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectCreatorUtils::CreateThreadHandler(philosophers);
 		threadHandler->Execute();
 
 	}

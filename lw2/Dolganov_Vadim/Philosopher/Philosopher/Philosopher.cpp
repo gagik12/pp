@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Philosopher.h"
 
-
 CPhilosopher::CPhilosopher(std::string const& name)
 	: m_name(name)
 {
@@ -25,6 +24,5 @@ void CPhilosopher::MainLoop()
 		m_availableForks.second.Unlock();
 		std::printf("#%s: Think\n", m_name.c_str());
 		Sleep(1500);
-
 	}
 }
