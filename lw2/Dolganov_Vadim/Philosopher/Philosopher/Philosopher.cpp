@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Philosopher.h"
 
 
@@ -16,8 +16,8 @@ void CPhilosopher::MainLoop()
 {
 	while (true)
 	{
-		m_availableForks.first.Lock(); //берем 1 вилку
-		m_availableForks.second.Lock(); //берем 2 вилку
+		m_availableForks.first.Lock(); //Р±РµСЂРµРј 1 РІРёР»РєСѓ
+		m_availableForks.second.Lock(); //Р±РµСЂРµРј 2 РІРёР»РєСѓ
 		std::printf("#%s: Eat noodles\n", m_name.c_str());
 		Sleep(1000);
 		std::printf("#%s: Put forks\n", m_name.c_str());

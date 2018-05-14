@@ -1,11 +1,11 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Fork.h"
 #include "Philosopher.h"
 #include "Thread.h"
 #include "ThreadHandler.h"
 
-//утилиты для создания объектов
-namespace ObjectСreatorUtils
+//СѓС‚РёР»РёС‚С‹ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РѕР±СЉРµРєС‚РѕРІ
+namespace ObjectРЎreatorUtils
 {
 	CFork::Forks CreateForks()
 	{
@@ -43,13 +43,13 @@ namespace ObjectСreatorUtils
 
 }
 
-//Усадить философов по местам
-//У конкретного философа слева и справа на столе лежат вилки
-//Aristotle вилка с индексом 0 и 1
-//Socrates вилка с индексом 1 и 2
-//Pifagor вилка с индексом 2 и 3
-//Platon вилка с индексом 3 и 4
-//Ptolemy вилка с индексом 4 и 0
+//РЈСЃР°РґРёС‚СЊ С„РёР»РѕСЃРѕС„РѕРІ РїРѕ РјРµСЃС‚Р°Рј
+//РЈ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ С„РёР»РѕСЃРѕС„Р° СЃР»РµРІР° Рё СЃРїСЂР°РІР° РЅР° СЃС‚РѕР»Рµ Р»РµР¶Р°С‚ РІРёР»РєРё
+//Aristotle РІРёР»РєР° СЃ РёРЅРґРµРєСЃРѕРј 0 Рё 1
+//Socrates РІРёР»РєР° СЃ РёРЅРґРµРєСЃРѕРј 1 Рё 2
+//Pifagor РІРёР»РєР° СЃ РёРЅРґРµРєСЃРѕРј 2 Рё 3
+//Platon РІРёР»РєР° СЃ РёРЅРґРµРєСЃРѕРј 3 Рё 4
+//Ptolemy РІРёР»РєР° СЃ РёРЅРґРµРєСЃРѕРј 4 Рё 0
 void ToSeatPhilosophersInPlaces(CFork::Forks const& forks, CPhilosopher::PhilosophersPtr & philosophers)
 {
 	for (size_t i = 0; i < CFork::MAX_COUNT_FORKS; ++i)
@@ -62,10 +62,10 @@ int main()
 {
 	try
 	{
-		CFork::Forks forks = ObjectСreatorUtils::CreateForks();
-		CPhilosopher::PhilosophersPtr philosophers = ObjectСreatorUtils::CreatePhilosophers();
+		CFork::Forks forks = ObjectРЎreatorUtils::CreateForks();
+		CPhilosopher::PhilosophersPtr philosophers = ObjectРЎreatorUtils::CreatePhilosophers();
 		ToSeatPhilosophersInPlaces(forks, philosophers);
-		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectСreatorUtils::CreateThreadHandler(philosophers);
+		CThreadHandler::ThreadHandlerPtr threadHandler = ObjectРЎreatorUtils::CreateThreadHandler(philosophers);
 		threadHandler->Execute();
 
 	}

@@ -1,7 +1,7 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Semaphor.h"
 
-//CreateSemaphore(nil, 1, 1, nil)  создает семафор с которым может работать только один поток, это равносильно mutex'у
+//CreateSemaphore(nil, 1, 1, nil)  СЃРѕР·РґР°РµС‚ СЃРµРјР°С„РѕСЂ СЃ РєРѕС‚РѕСЂС‹Рј РјРѕР¶РµС‚ СЂР°Р±РѕС‚Р°С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРёРЅ РїРѕС‚РѕРє, СЌС‚Рѕ СЂР°РІРЅРѕСЃРёР»СЊРЅРѕ mutex'Сѓ
 //https://exelab.ru/pro/cpp.php?r=vcppnet&d=zart182
 Semaphor::Semaphor()
 	: m_hSemaphore(CreateSemaphore(NULL, 1, 1, NULL))
